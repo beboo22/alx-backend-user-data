@@ -9,9 +9,7 @@ import re
 def filter_datum(fields: List[str],
                  redaction: str, message: str,
                  separator: str):
-    """ The function should use
-    a regex to replace occurrences
-    of certain field values."""
+    """ Returns a log message obfuscated """
     for x in fields:
         message = re.sub(f'{x}=.*?{separator}',
                          f'{x}={redaction}{separator}', message)
