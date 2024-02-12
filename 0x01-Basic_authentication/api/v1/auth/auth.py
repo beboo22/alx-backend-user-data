@@ -13,22 +13,22 @@ class Auth:
         """ Return boolean """
         if path is None:
             return True
-        
+
         if path[-1] != '/':
             path = path + '/'
-        
-        
+
         if excluded_paths is None or len(excluded_paths) == 0:
             return True
-        
+
         if path not in excluded_paths:
             return True
-        
+
         if path in excluded_paths:
             return False
-        
+
         x = "/api/v1/status/"
-        if (path == "/api/v1/status" or path == "/api/v1/status/") and x in excluded_paths:
+        if (path == "/api/v1/status" or path == "/api/v1/status/")
+        and x in excluded_paths:
             return False
 
         return False

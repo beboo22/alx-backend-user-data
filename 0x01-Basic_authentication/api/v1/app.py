@@ -26,14 +26,14 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def not_found(error) -> str:
+def unauthorized_error(error) -> str:
     """ Not found handler
     """
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(403)
-def not_found(error) -> str:
+def forbidden_error(error) -> str:
     """ Not found handler
     """
     return jsonify({"error": "Forbidden"}), 403
@@ -43,13 +43,15 @@ def not_found(error) -> str:
 def before_request() -> str:
     """ Not found handler
     """
-    l =['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    list_auth = ['/api/v1/status/', '/api/v1/unauthorized/',
+                 '/api/v1/forbidden/']
     if auth:
-        if auth.require_auth(request.path,l):
+        if auth.require_auth(request.path, list_auth):
             if auth.authorization_header(request) is None:
                 abort(401)
             if auth.current_user(request) is None:
                 abort(403)
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
