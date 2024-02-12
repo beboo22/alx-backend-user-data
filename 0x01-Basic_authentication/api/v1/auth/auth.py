@@ -27,8 +27,8 @@ class Auth:
             return False
 
         x = "/api/v1/status/"
-        if (path == "/api/v1/status" or path == "/api/v1/status/")
-        and x in excluded_paths:
+        if (path == "/api/v1/status"
+           or path == "/api/v1/status/") and x in excluded_paths:
             return False
 
         return False
