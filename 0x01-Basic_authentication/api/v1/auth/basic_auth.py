@@ -46,21 +46,23 @@ class BasicAuth(Auth):
             return (s[0], s[1])
 
     def user_object_from_credentials(self,
-                                         user_email: str, user_pwd: 
-                                         str) -> TypeVar('User'):
+                                     user_email: str, user_pwd:
+                                     str) -> TypeVar('User'):
         """Extracts base64 encoded authorization header"""
         if (
-        user_email is None
-        or user_pwd is None
-        or not isinstance(user_email, str)
-        or not isinstance(user_pwd, str)
+          user_email is None
+          or user_pwd is None
+          or not isinstance(user_email, str)
+          or not isinstance(user_pwd, str)
         ):
             return None
 
         x = User()
         search_result = x.search({'email': user_email})
 
-        if search_result is None or not isinstance(search_result, list) or len(search_result) == 0:
+        if search_result is None or\
+           not isinstance(search_result, list)\
+           or len(search_result) == 0:
             return None
 
         user_object = search_result[0]
