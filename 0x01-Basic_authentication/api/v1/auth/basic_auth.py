@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """  template for all authentication system
 """
-from flask import request
-from typing import List, TypeVar
+from api.v1.auth.auth import Auth
 
 
-class BasicAuth:
+
+class BasicAuth(Auth):
     """
     Manage API authentication methods
     """
