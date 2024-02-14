@@ -48,5 +48,5 @@ class Auth:
         """creates a Session ID for a user_id"""
         if request is None:
             return None
-        cookie_name = os.getenv("SESSION_NAME")
-        return request.cookies.get(cookie_name)
+        cookieName = os.getenv("SESSION_NAME")
+        return request.cookies.get(cookieName)
