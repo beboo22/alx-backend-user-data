@@ -3,6 +3,7 @@
 """
 from flask import request
 from typing import List, TypeVar
+import os
 
 
 class Auth:
@@ -47,4 +48,5 @@ class Auth:
         """creates a Session ID for a user_id"""
         if request is None:
             return None
-        return request.cookies.get("_my_session_id")
+        cookie_name = os.getenv("SESSION_NAME")
+        return request.cookies.get(cookie_name)
