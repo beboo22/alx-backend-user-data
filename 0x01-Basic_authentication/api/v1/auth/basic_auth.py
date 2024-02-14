@@ -71,20 +71,21 @@ class BasicAuth(Auth):
             return None
 
     def current_user(self, request=None) -> TypeVar('User'):
+        """Extracts base64 encoded authorization header"""
         Authorization_header = self.authorization_header(request)
         if not Authorization_header:
             return None
-
         extract_authorization_header =\
-        self.extract_base64_authorization_header(Authorization_header)
+            self.extract_base64_authorization_header(Authorization_header)
         decode_authorization_header =\
-        self.decode_base64_authorization_header(extract_authorization_header)
+            self.decode_base64_authorization_header(
+                extract_authorization_header)
         extract_credentials =\
-        self.extract_user_credentials(decode_authorization_header)
+            self.extract_user_credentials(decode_authorization_header)
         user_email = extract_credentials[0]
         user_pwd = extract_credentials[1]
         extract_credentials =\
-        self.user_object_from_credentials(user_email, user_pwd)
+            self.user_object_from_credentials(user_email, user_pwd)
         if extract_credentials is None:
             return None
         return extract_credentials
