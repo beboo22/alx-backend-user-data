@@ -4,7 +4,7 @@ Session authentication route handlers
 """
 from api.v1.views import app_views
 from models.user import User
-from flask import jsonify, request
+from flask import jsonify, request, abort
 import os
 
 
@@ -33,3 +33,12 @@ def session_login() -> str:
     cookieName = os.getenv("SESSION_NAME")
     res.set_cookie(cookieName, SessionID)
     return res
+
+@app_views.route('/api/v1/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+def session_logout() -> str:
+    """create session_login"""
+    from api.v1.app import auth
+    SessionID = auth.destroy_session(request)
+    if SessionID is False:
+        abort(404)
+    return jsonify({}),200
