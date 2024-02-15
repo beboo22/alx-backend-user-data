@@ -16,18 +16,18 @@ def session_login() -> str:
     user_password = request.form.get("password")
 
     if user_email == "" or user_email is None:
-        return jsonify({ "error": "email missing" }), 400
+        return jsonify({"error": "email missing"}), 400
 
     if user_password == "" or user_password is None:
-        return jsonify({ "error": "password missing" }), 400
+        return jsonify({"error": "password missing"}), 400
 
-    user = User.search({"email":user_email})
+    user = User.search({"email": user_email})
     if not user:
-        return jsonify({ "error": "no user found for this email" }), 404
+        return jsonify({"error": "no user found for this email"}), 404
 
-    user = User.search({"email":user_email})[0]
+    user = User.search({"email": user_email})[0]
     if user.is_valid_password(user_password) is False:
-        return jsonify({ "error": "wrong password" }), 401
+        return jsonify({"error": "wrong password"}), 401
     SessionID = auth.create_session(user.id)
     res = jsonify(user.to_json())
     cookieName = os.getenv("SESSION_NAME")
