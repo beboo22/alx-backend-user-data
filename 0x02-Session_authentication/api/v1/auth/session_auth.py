@@ -33,3 +33,8 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(session_id)
         user = User.get(user_id)
         return user
+
+    def destroy_session(self, request=None):
+        """creates a Session ID for a user_id"""
+        if request is None:
+            return None
