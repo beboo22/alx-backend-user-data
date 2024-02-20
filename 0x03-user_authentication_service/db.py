@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 
 
 class DB:
@@ -37,7 +38,20 @@ class DB:
         self._session.commit()
         return db_user
 
-    def find_user_by():
+    def find_user_by(self, **kwarg) -> User:
         """Memoized session object
         """
-        pass
+        if kwarg is None:
+            raise InvalidRequestError
+
+        user_keys = ['id', 'email', 'hashed_password',
+                     'session_id', 'reset_token']
+        for key in kwarg.keys():
+            if key not in user_keys:
+                raise InvalidRequestError
+
+        firstRow = self._session.query(User).filter_by(**kwarg).first()
+        if firstRow is None:
+            raise NoResultFound
+
+        return firstRow
