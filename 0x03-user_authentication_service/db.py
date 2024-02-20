@@ -6,7 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
-from sqlalchemy.exc import NoResultFound, InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
@@ -55,3 +56,17 @@ class DB:
             raise NoResultFound
 
         return firstRow
+
+    def update_user(self, user_id: int, **kwarg) -> None:
+        """Memoized session object
+        """
+        obj = self.find_user_by(id=user_id)
+        user_keys = ['id', 'email', 'hashed_password',
+                     'session_id', 'reset_token']
+        for key, val in kwarg.items():
+            if key in user_keys:
+                setattr(obj, key, val)
+            else:
+                raise ValueError
+
+        self._session.commit()
