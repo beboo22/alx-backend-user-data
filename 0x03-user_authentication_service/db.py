@@ -40,4 +40,4 @@ class DB:
     def find_user_by():
         """Memoized session object
         """
-        
+        pass
