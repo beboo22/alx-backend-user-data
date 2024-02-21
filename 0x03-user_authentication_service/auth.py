@@ -5,7 +5,7 @@ Main file
 import bcrypt
 
 
-def _hash_password(password: str):
+def _hash_password(password: str) -> bytes:
     """Memoized session object
     """
     password = password.encode("utf-8")
