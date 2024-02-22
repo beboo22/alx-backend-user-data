@@ -53,5 +53,19 @@ def login() -> Union[str, None]:
         abort(401)
 
 
+@app.route('/sessions', methods=["DELETE"])
+def logout() -> Union[str, None]:
+    """GET /
+    Return:
+        - JSON payload containing a welcome message.
+    """
+    session_id = request.form.get("session_id")
+    find_user = AUTH.get_user_from_session_id(session_id)
+    if find_user is None:
+        abort(403)
+    AUTH.destroy_session(find_user.id)
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
