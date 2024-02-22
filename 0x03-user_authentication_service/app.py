@@ -104,7 +104,7 @@ def update_password() -> Union[str, None]:
     reset_token = request.form.get("reset_token")
     new_password = request.form.get("new_password")
     try:
-        reset_token = AUTH.update_password(reset_token, new_password)
+        AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
 
