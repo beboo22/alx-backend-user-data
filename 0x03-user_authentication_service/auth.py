@@ -40,11 +40,20 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         try:
-            find_em = self._db.find_user_by(email=email)
+            find_user = self._db.find_user_by(email=email)
         except NoResultFound:
             return False
         password = password.encode("utf-8")
-        hashed_password = find_em.hashed_password
+        hashed_password = find_user.hashed_password
         if bcrypt.checkpw(password, hashed_password):
             return True
         return False
+
+    def create_session(self, email: str):
+        try:
+            find_user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+        session_id = _generate_uuid()
+        self._db.update_user(find_user.id, session_id=session_id)
+        return session_id
