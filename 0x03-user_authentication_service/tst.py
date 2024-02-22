@@ -13,5 +13,4 @@ salt = bcrypt.gensalt()
 hashed_password = bcrypt.hashpw(password, salt)
 
 print(hashed_password)
-# def _hash_password(password:str):
-#     return password.encode("utf-8")
+print(bcrypt.checkpw(password, hashed_password))
