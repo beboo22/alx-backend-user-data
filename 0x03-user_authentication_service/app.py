@@ -44,13 +44,12 @@ def login() -> Union[str, None]:
     """
     email = request.form.get("email")
     password = request.form.get("password")
-    if AUTH.valid_login(email, password):
-        session_id = AUTH.create_session(email)
-        res = jsonify({"email": email, "message": "logged in"})
-        res.set_cookie("session_id", session_id)
-        return res
-    else:
+    if not AUTH.valid_login(email, password):
         abort(401)
+    session_id = AUTH.create_session(email)
+    res = jsonify({"email": email, "message": "logged in"})
+    res.set_cookie("session_id", session_id)
+    return res
 
 
 @app.route('/sessions', methods=["DELETE"])
@@ -65,6 +64,19 @@ def logout() -> Union[str, None]:
         abort(403)
     AUTH.destroy_session(find_user.id)
     return redirect("/")
+
+
+@app.route('/profile', methods=["GET"])
+def profile() -> Union[str, None]:
+    """GET /
+    Return:
+        - JSON payload containing a welcome message.
+    """
+    session_id = request.cookies.get("session_id", None)
+    find_user = AUTH.get_user_from_session_id(session_id)
+    if find_user is None or session_id is None:
+        abort(403)
+    return jsonify({"email": find_user.email})
 
 
 if __name__ == "__main__":
