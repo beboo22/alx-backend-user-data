@@ -48,6 +48,7 @@ def login() -> Union[str, None]:
         session_id = AUTH.create_session(email)
         res = jsonify({"email": email, "message": "logged in"})
         res.set_cookie("session_id", session_id)
+        return res
     else:
         abort(401)
 
