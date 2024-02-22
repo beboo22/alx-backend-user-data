@@ -2,10 +2,11 @@
 """
 Main file
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from auth import Auth
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.exc import InvalidRequestError
+from typing import Union
 
 app = Flask(__name__)
 AUTH = Auth()
@@ -34,7 +35,21 @@ def register_users() -> str:
     except Exception:
         return jsonify({"message": "email already registered"}), 400
 
-    return jsonify({"message": "Bienvenue"})
+
+@app.route('/sessions', methods=["POST"])
+def login() -> Union[str, None]:
+    """GET /
+    Return:
+        - JSON payload containing a welcome message.
+    """
+    email = request.form.get("email")
+    password = request.form.get("password")
+    if AUTH.valid_login(email, password):
+        session_id = AUTH.create_session(email)
+        res = jsonify({"email": "<user email>", "message": "logged in"})
+        res.set_cookie("session_id", session_id)
+    else:
+        abort(401)
 
 
 if __name__ == "__main__":
