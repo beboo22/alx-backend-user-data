@@ -96,5 +96,3 @@ class Auth:
             find_user.id,
             hashed_password=password,
             reset_token=None)
-
-        return reset_token
