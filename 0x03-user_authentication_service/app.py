@@ -59,9 +59,9 @@ def logout() -> Union[str, None]:
     Return:
         - JSON payload containing a welcome message.
     """
-    session_id = request.cookies.get("session_id")
+    session_id = request.cookies.get("session_id", None)
     find_user = AUTH.get_user_from_session_id(session_id)
-    if find_user is None:
+    if find_user is None or session_id is None:
         abort(403)
     AUTH.destroy_session(find_user.id)
     return redirect("/")
